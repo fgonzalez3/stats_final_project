@@ -370,39 +370,35 @@ divy_count %>%
 
 ```{r clean_data}
 
-# not really sure what is going on here
-# map requires API key, and the API key i created does not work 
-
 
 # time series of trip duration as a function of temperature 
 
 plot(divy_2017$tripduration, divy_2017$temperature, type = "o")
 
 
-# create map 
+# create chicago map 
 
 library(ggmap)
 
-from <- data.frame(lon=as.numeric(divy_2017$longitude_start), lat=as.numeric(divy_2017$latitude_start))
+# registration
 
-to   <- data.frame(lon=as.numeric(divy_2017$longitude_end), 
-                   lat=as.numeric(divy_2017$latitude_end))
+register_google(key = "AIzaSyC5NF4xccTOw2UvjV4PRIElzrX8vr5Yv6U")
+
+# create map 
+chicago <- get_map(location = "Chicago", zoom = 13, legend = "bottom")
+
+chicago.map <- ggmap(chicago)
+
+from <- data.frame(lon = as.numeric(divy_2017$longitude_start), lat = as.numeric(divy_2017$latitude_start))
+
+to <- data.frame(lon = as.numeric(divy_2017$longitude_end), lat = as.numeric(divy_2017$latitude_end))
+
+from1 <- data.frame(from, gender = divy_2017$gender)
+
+chicago.map + stat_density2d(aes(x=lon, y=lat, fill = ..level..), alpha=0.5, 
+size = 2, bins = 8, data=from1, geom="polygon") + scale_fill_gradient(low="pink", high="purple4") + facet_grid(~ gender) #+ theme(panel.margin = unit(2, "lines"))
 
 
-AIzaSyACDYzNB7CTC497brieNhJ7SVoHiPuKGeo
-
-chicago <- get_map(location = "Chicago", zoom = 11)
-
-nyc.map <- ggmap(nyc, extent="device", legend="bottom", maprange=FALSE)
-from1   <- data.frame(from, usertype=data$usertype)
-
-
-ggmap(get_map(location = 'Chicago', zoom = 7)) +
-  geom_point(data=salesCalls, aes(x=lon, y=lat, size=Calls), color="orange")
-
-ggmap::register_google()
-
-register_google(key = "AIzaSyACDYzNB7CTC497brieNhJ7SVoHiPuKGeo")
 
 
 ```
