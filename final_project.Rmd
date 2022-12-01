@@ -120,22 +120,29 @@ $\\$
 
 Write ~1-3 paragraphs describing:
 
-1. What is problem you are addressing and why the problem you are addressing is
+1. What is the problem you are addressing and why the problem you are addressing is
 interesting.
 
-I am planning to take a look at average temperatures over the last few decades
-in the United States. Average temperatures are changing on a yearly basis, so I 
-want to analyze how these temperatures might be changing nationwide and by state 
-or city. I want to model what average temperatures might be in the next few years
-across regions and understand how well some of the models that we've used in 
-class might be at predicting temperature change. 
+Divvy is a bike-sharing system in the Greater Chicago 
+
+Possible analyses:
+- calculate distance based on latitude-longitude data and use that as a response variable/predictor variable?
+- what is the main response variable we want to determine? 
+  - duration of trips? 
+  - distance of trips?
+  - busiest stations?
+- potential predictor variables
+  - gender
+  - month
+  - weather ("events" and "temperature")
+  - 
+
 
 
 2. Where you got the data from, including a link to the website where you got
 the data if applicable.
 
-I got the dataset from Kaggle, which takes a look at average temperature across 
-many continents, countries, states, and cities. Link below: 
+I got the dataset from Kaggle, which takes a look at Divvy bike usership in Chicago from 2014 to 2017
 
 https://www.kaggle.com/datasets/sudalairajkumar/daily-temperature-of-major-cities
 
