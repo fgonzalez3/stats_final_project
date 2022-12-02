@@ -1,0 +1,75 @@
+```
+
+Introduction (15 points)
+
+-Did not clearly describe what question the analysis is addressing 
+
+-Did not describe why the question/analysis is important 
+
+-Did not describe where the data come from 
+
+-Did not describe what other analyses have been done on the data 
+
+```
+
+ 
+ ```
+
+Data wrangling (15 points)
+
+-Did not provide a clear explanation of what the variables are that are used in the analysis 
+
+-Did not show data wrangling, or describe that the data was already clean
+
+-Did not explain your resonating behind removing outliers/did not remove outliers that are due to errors
+
+-Data wrangling graphs are missing labels
+
+```
+
+```
+Data visualization (20 points)
+
+-Visual appearance of graphs could be improved; i.e., missing labels, poor color choices, etc. 
+
+-Further graphical methods should have been explored 
+
+-Plot does not add any insight into the question of interest 
+
+-Jumped right into the analysis without properly visualizing the available variables 
+
+-Did not provide a written describe of the insights that the graphs provide 
+
+```
+ 
+```
+Results modeling (25 points)
+
+-Did not check assumptions for analyses 
+
+-Did not describe model fit or consider transformations 
+
+-Would benefit from an additional test/analysis 
+
+-Inappropriate model used for the data being analyzed
+
+-Analyses do not address the question of interest 
+
+-Code is not neat or well commented 
+
+-Falls short for a two-person project
+
+Has limitations that should have been either been taken into account or mentioned
+```
+
+```
+Conclusions (15 points)
+
+-Conclusions reiterates test results with no significant insight given; i.e., does not describe how results address question of interest, why the are interesting, or put them into context.
+
+-Missing conclusions
+
+```
+
+
+Reflection (10 points)
