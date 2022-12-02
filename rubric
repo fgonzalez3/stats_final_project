@@ -1,6 +1,5 @@
-```
 
-Introduction (15 points)
+###Introduction (15 points)
 
 -Did not clearly describe what question the analysis is addressing 
 
@@ -10,12 +9,10 @@ Introduction (15 points)
 
 -Did not describe what other analyses have been done on the data 
 
-```
-
  
- ```
 
-Data wrangling (15 points)
+
+###Data wrangling (15 points)
 
 -Did not provide a clear explanation of what the variables are that are used in the analysis 
 
@@ -25,10 +22,10 @@ Data wrangling (15 points)
 
 -Data wrangling graphs are missing labels
 
-```
 
-```
-Data visualization (20 points)
+
+
+###Data visualization (20 points)
 
 -Visual appearance of graphs could be improved; i.e., missing labels, poor color choices, etc. 
 
@@ -40,10 +37,9 @@ Data visualization (20 points)
 
 -Did not provide a written describe of the insights that the graphs provide 
 
-```
+
  
-```
-Results modeling (25 points)
+###Results modeling (25 points)
 
 -Did not check assumptions for analyses 
 
@@ -59,17 +55,17 @@ Results modeling (25 points)
 
 -Falls short for a two-person project
 
-Has limitations that should have been either been taken into account or mentioned
-```
+-Has limitations that should have been either been taken into account or mentioned
 
-```
-Conclusions (15 points)
+
+
+###Conclusions (15 points)
 
 -Conclusions reiterates test results with no significant insight given; i.e., does not describe how results address question of interest, why the are interesting, or put them into context.
 
 -Missing conclusions
 
-```
+
 
 
 Reflection (10 points)
