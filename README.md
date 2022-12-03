@@ -1,5 +1,5 @@
 # stats_final_project
-this is a repository for the SDS530 final project. this contains script and files used for analyzing divy bike use data in chicago
+This is a repository for the SDS530 final project and contains script and files used for analyzing divvy bike use data in Chicago in 2017.
 
 
 - To access data.csv used for analysis, go to https://www.kaggle.com/datasets/yingwurenjian/chicago-divvy-bicycle-sharing-data/
