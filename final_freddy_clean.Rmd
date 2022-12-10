@@ -1,0 +1,697 @@
+---
+title: "Final Project: Chicago Divvy Ridership"
+output:
+  pdf_document: default
+---
+
+
+
+$\\$
+
+
+
+## Author: Swathi Nachiar Manivannan & Freddy Gonzalez
+
+## Discussants: https://www.kaggle.com/datasets/yingwurenjian/chicago-divvy-bicycle-sharing-data
+
+
+
+
+
+
+
+
+<!--  
+
+
+This is a template for creating your final project report. It lays out the
+sections that should be in your write-up and describes a little about these
+sections. There is some flexibility to deviate from this structure, for example,
+interweaving more visualizations and analyses could work well.
+
+Your report should be between 5-8 pages long and should contain:
+
+    1. Introduction: 
+      a. What is question you are addressing? 
+      b. Why is important? 
+      c. Where did you get the data?
+      d. What other analyses that been done on the data ?
+      
+    2. Visualizations of the data: one or more plots
+    
+    3. Analyses: models, hypothesis tests, confidence intervals and other
+    inferential statistics that give insight into your question
+    
+    4. Conclusions: What you found, future directions, etc.
+    
+    5. Reflection (do be completed on Canvas)
+       a. What went well? 
+       b. What did you struggle with?
+       c. What analyses did you do that you are not including? etc. 
+
+Please make your report look good by paying attention to detail, using
+additional R Markdown features etc.
+
+If there is additional code or data you would like to include with your report,
+please create a GitHub page and add a link to it in your report. Additionally,
+you can append the full code for your analysis in an appendix section at the end
+of the document, and then include only the most important pieces of code in the
+body of the report. For example, you can exclude details of data cleaning from
+the body of the report. However, include anything central to your analyses, and
+also any information about particular choices you made that might affect the
+results, and why you made those choices, in the body of the report (e.g.,
+explain if data was excluded and why, etc.).
+
+
+
+--> 
+
+
+<!-- There are some options that might help make your document look better.  
+Feel free to add additional options here -->
+```{r message=FALSE, warning=FALSE, tidy=TRUE, echo=FALSE}
+
+library(knitr)
+
+# This makes sure the code is wrapped to fit when it creates a pdf
+opts_chunk$set(tidy.opts=list(width.cutoff=60))   
+
+
+# Set the random number generator to always give the same random numbers
+set.seed(230)  
+
+
+```
+
+
+
+
+
+
+
+$\\$
+
+
+
+
+
+
+
+
+
+## Introduction 
+
+
+<!--  
+
+Write ~1-3 paragraphs describing:
+
+1. What is problem you are addressing and why the problem you are addressing is
+interesting.
+
+2. Where you got the data from, including a link to the website where you got
+the data if applicable.
+
+3. What other analyses have already been done with the data and possibly links
+to other analyses. Also mention if you are using the data in another class or
+for another research project.
+
+
+--> 
+
+Bike-sharing systems have been increasingly introduced in cities around the world 
+to offer residents an alternative and more affordable mode of transportation. Particularly 
+in light of increased traffic congestion and anthropogenically caused climate change and 
+pollution, there has been a greater need to offer "greener" modes of transportation in 
+cities as a solution to these issues, and more importantly, incentivise residents to consider 
+these options instead of driving. Bike-sharing systems have been met with mixed success all 
+over the world; while some cities have had successful bike-sharing programs for several years, 
+others have scrapped them within months from their launch. Therefore, in order to ensure the 
+success of bike-sharing systems, there is first and foremost a need to characterise the 
+ridership so that sensible and sustainbale financial decisions can 
+be made based on this information.
+
+Divvy is a bike-sharing system that services the Greater Chicago metropolitan area. It was 
+first introduced in 2013 and has since become an integral part of Chicago, with an annual 
+ridership of more than 3 million as of 2019. The aim of our project is to therefore 
+characterise and obtain a broad picture understanding of Divvy ridership in the year 2017. 
+The main questions we are asking are:
+
+1. What is the geographical distribution of Divvy bike rides in the Greater Chicago metropolitan area?
+2. How does the mean/frequency of bike ridership vary with respect to:
+  a. Gender of commuters
+  b. Temporality?
+    i. The hour of the day?
+    ii. The day of the week?
+    iii. The month of the year?
+  c. Seasonality?
+    i. Temperature
+    ii. Precipitation events?
+3. Can we construct a model to predict the duration and/or distance of Divvy bike trips?
+
+
+Possible analyses:
+- calculate distance based on latitude-longitude data and use that as a response variable/predictor variable?
+- what is the main response variable we want to determine? 
+  - duration of trips? 
+  - distance of trips?
+  - busiest stations?
+- potential predictor variables
+  - gender
+  - month
+  - weather ("events" and "temperature")
+
+
+
+   
+$\\$   
+   
+    
+
+
+
+
+## Results
+
+
+
+$\\$
+    
+
+
+### Data wrangling: Change the subtitle here to describe what you are plotting etc.
+
+
+
+<!--  
+
+Very briefly discuss how you got the data into shape for your analyses. You can
+include some code here, although extensive data cleaning code should be put on
+GitHub and/or in an appendix at the end of the document.
+
+--> 
+
+
+
+
+$\\$
+    
+
+
+
+
+### Visualize the data: Change the subtitle here to describe what you are plotting etc.
+
+
+
+<!--  
+
+Create one or more plots of your data. Describe the plot(s), what they shows,
+and why they are of interest to your analysis. Include the code to create these
+plots in the R chunk below. You can also discuss the plots after the code too.
+Finally, be sure to make plots as clear as possible (clear axis labeling,
+legends and captions) so that it is easy for the reader to quickly understand
+the central information being conveyed.
+
+--> 
+Data Visualizations 1.1 - Geographical Visualization
+
+The Divvy dataset provides the bike station where the trip starts and ends. The 
+location of the street is defined in terms of street name as well as in terms of 
+latitude/longitude. We can use this information to locate the stations on a map 
+and to study the trip behavior for Divvy users in the greater Chicago metro area. 
+This plot is of particular interest because it will help elucidate the differences 
+in ridership under different influencing variables. 
+
+For this specific graph, we will be observing the geographical distribution of 
+Divvy bike rides with respect to rider gender
+
+The first thing we are going to do is try to have a geographical representation
+of where in the city most of the trips start. This can be done using the ggmap
+package within R. The pipeline that we will follow is such that: 
+
+1. We will download a map of the area we are interested in, and then overlay on
+the map an additional layer in the form of a contour plot. The script below 
+specifies for a map of Chicago centered around the loop, a 35-block area of 
+downtown Chicago, and any neighborhoods immediately adjacent including the 
+West Loop and Gold Coast, for example. 
+
+2. We then plot the map with ggmap() and finally add the contour plot that 
+represents the frequency of trips originated at each Divvy bike station. Darker 
+areas represent locations in which many trips start, while lighter colors 
+represent the opposite. 
+
+
+
+
+```{r message=FALSE, warning=FALSE, tidy=TRUE}
+
+# read in csv containing divvy bike data. This is the raw data file obtained from Kaggle
+
+divy_chicago <- read.csv("data.csv")
+
+# filter to only include ridership data in 2017 and omit any NA
+
+divy_2017 <- divy_chicago |>
+  filter(year == "2017") |>
+  na.omit()
+
+
+
+library(ggplot2)
+library(ggmap)
+
+# register Google API key
+
+register_google(key = "AIzaSyC5NF4xccTOw2UvjV4PRIElzrX8vr5Yv6U")
+
+# load Chicago map and make sure it loads properly
+# also adjust zoom scale to only visualize loop and surrounding areas 
+
+chicago <- get_map(location = "Chicago", zoom = 13, legend = "bottom")
+
+chicago.map <- ggmap(chicago)
+
+# use lon and lat data to indicate start and end points that will be used to make
+# map
+
+from <- data.frame(lon = as.numeric(divy_2017$longitude_start), lat = as.numeric(divy_2017$latitude_start))
+
+to <- data.frame(lon = as.numeric(divy_2017$longitude_end), lat = as.numeric(divy_2017$latitude_end))
+
+# A) create a map that shows most common starting points by gender 
+
+from1 <- data.frame(from, gender = divy_2017$gender)
+
+chicago.map + stat_density2d(aes(x=lon, y=lat, fill = ..level..), alpha=0.5, 
+size = 2, bins = 8, data=from1, geom="polygon") + scale_fill_gradient(low="pink", high="purple4") + facet_wrap(~ gender) + ggtitle("Ridership By Gender") + 
+  xlab("Longitude") + ylab("Latitude") 
+
+```
+
+Discussion of graph 1.1A - Ridership by gender 
+
+This graph generates a contour plot for men and women separately. Male riders 
+seem to cover a larger a larger area of starting points, albeit less predictable. 
+On the other end, female riders seem to have a more predictable starting location, 
+generating more concentrated starting points at fewer locations. However, there
+is a large overlap among both genders at locations near Fulton Market, the 
+Merchandise Mart, and near Clark/Lake. 
+
+<!--  
+
+Possible additional discussion of the plots here. 
+
+--> 
+
+Data Visualizations 1.2 - Differences in ridership by day of the week  
+
+The Divvy dataset provides the day of the week in which a trip was taken. 
+According to map B, plotting ridership by day of the week, there are differences in where 
+trips were taken from throughout the week. This poses the question of how time of day
+may influence ridership throughout the week. This plot is of particular interest because it 
+will help elucidate which time points are most popular among users. 
+
+For this specific graph, we will be observing the distribution of ridership with 
+respect to hour and day of the week. The first thing we are going to do is is 
+briefly summarize ridership by usertype. There are two main types of Divvy riders, 
+subscribers and customers. Subscribers pay $99/yr and get unlimited 
+rides so long as they are under 45 minutes. These are more than often commuters 
+that live in the city and travel to and from work. Customers pay as they go. This is 
+a great option for tourists to see Chicago for cheap. 
+
+The first thing we are going to do is briefly summarize ridership by usertype: 
+
+1. We first changed the user type data in our dataset to be contained as a factor. 
+We then created a summary table to count ridership by usertype. 
+
+2. Our summary table indicated that Subscribers were the most common riders during 
+2017, with a total of 2956854 rides. Because of this, we chose to merely focus 
+on this user type. 
+
+To visualize Subscriber ridership by hour throughout the week, our pipeline consisted 
+of the following steps: 
+
+1. Subset for both 'Subscriber' user type and day of the week. We chose to split 
+this up into two plots, one looking at Subscriber ridership throughout the work
+week and another looking at Subscriber ridership on the weekends.
+
+2. Plot this subset of data in accordance with hour and percentage of rides at 
+that hour. 
+
+
+```{r message=FALSE, warning=FALSE, tidy=TRUE}
+
+# count riders by usertype to gain inference on who is most utilizing the Divvy
+# bike service 
+
+divy_2017$usertype <- as.factor(divy_2017$usertype)
+
+summary(divy_2017$usertype)
+
+# subset for subscribers 
+
+divy_count_hour_2017 <- divy_2017 %>%
+  select(usertype, month, week, day, hour, tripduration) %>%
+  group_by(hour,day) %>%
+  subset(usertype == "Subscriber") %>%
+  na.omit()
+
+# subset for subscribers and exclude weekends to rule out tourists 
+
+divy_count_hour_2017 %>% subset( !(day %in% c("5", "6"))) %>%
+ggplot(aes(x = hour, fill = day)) + geom_bar(position = "dodge") + 
+  scale_fill_brewer(palette = "YlOrRd") + 
+  labs(y = "Counts", x = "Hour", fill = "Day") + 
+  ggtitle("Figure 1.2A - Subscriber Ridership Throughout Work Week")
+
+# now let's take a look at weekend ridership
+
+divy_count_hour_2017 %>% subset( !(day %in% c("0","1","2","3","4" ))) %>%
+ggplot(aes(x = hour, fill = day)) + geom_bar(position = "dodge") + 
+  scale_fill_brewer(palette = "YlOrRd") + 
+  labs(y = "Counts", x = "Hour", fill = "Day") + 
+  ggtitle("Figure 1.2B - Subscriber Ridership on Weekends")
+
+
+# divy_count_hour_2017$day <- c("Sunday",
+                       #  "Monday",
+                       #  "Tuesday",
+                        # "Wednesday", 
+                        # "Thursday", 
+                        # "Friday", 
+                       #  "Saturday" 
+                       # )
+
+```
+
+Discussion of graph 1.2 - Differences in proportions of trips taken by Subscribers
+throughout the week
+
+This graph generates a plot for ridership differences among 'Subscribers' by hour 
+throughout the week, and is separated into two plots:
+
+Plot 1.2A graphs 'Subscriber' ridership throughout the work week (Mon-Fri). This 
+plot shows two peaks at which riders are more often using Divvy. Those two peaks 
+occur during the morning and afternoon rush hours when riders are traveling to 
+work and traveling back from work, respectively. Ridership is at a minimum during 
+the very early hours when most riders are still asleep. 
+
+Plot 1.2B graphs 'Subscriber' ridership throughout the weekend (Sat-Sun). This plot 
+shows a different pattern in which riders are utilizing Divvy throughout most of the
+day. An elongated peak can be seen between hours ~10-19 when most riders are enjoying 
+their weekend. While rides are still at a minimum during the very early hours of the day, 
+there is a higher proportion of riders at these hours as opposed to those same hours 
+on throughout the work week. This is likely due to riders staying out later on the 
+weekends. 
+
+$\\$    
+    
+Data Visualizations 1.3 - Trip Duration Throughout Week (Draft)
+
+Now that we've plotted how many trips are being taken throughout the week, we 
+want to take a look at how long these trips (in minutes) generally are throughout 
+the week. We're again going to focus on Subscribers, since they are the most observed 
+population throughout our data set. This visualization will identify what day(s)
+of the week riders spend most of their time utilizing Divvy,allowing us to further 
+characterize when there is a greater demand the bikes. 
+
+For this visualization, the following pipeline was used: 
+
+1. Use dplyr to create a new data frame containing variables such as user type, 
+hour, day, and trip duration. From here, we grouped the data frame using hour and 
+day, subsetted for Subscribers, and omitted any NA variables. 
+
+2. We then used this data frame to plot the ride time (in minutes) using a heatmap.
+
+
+```{r message=FALSE, warning=FALSE, tidy=TRUE}
+
+# summary stat for df defining average ride time
+
+mean(divy_count_hour_2017$tripduration)
+
+# do a whole plot of trip duration and subset for Subscribers 
+divy_count_hour_2017 <- divy_2017 %>%
+  select(usertype, month, week, day, hour, gender, tripduration, temperature, events, trip_id) %>%
+  group_by(hour, day) %>%
+  subset(usertype == "Subscriber") %>%
+  na.omit()
+
+# heat map of trip duration
+
+ggplot(divy_count_hour_2017, aes(hour, day, fill = tripduration)) + geom_tile() +
+  guides(fill = guide_colourbar(barwidth = 1, barheight = 6.5)) + 
+  coord_fixed() + labs(x = "Hour", y = "Day", fill = "Trip Duration (min)") + 
+  ggtitle("Figure 1.3A - Divvy Bike Trip Duration by Hour of the Day")
+
+# histogram to show distribution of trip duration among Subscribers 
+
+ggplot(divy_count_hour_2017, aes(tripduration, fill = day)) + 
+  geom_histogram(aes(tripduration), bins = 100, binwidth = 0.1) + 
+  labs(x = "Trip Duration", y = "Counts", fill = "Day") + 
+  ggtitle("Figure 1.3B - Trip Duration Distribution Among Subscribers")
+
+# df for trips taken
+divy_count_trips_taken <- divy_2017 %>%
+  select(usertype, month, week, day, hour, gender, tripduration, temperature, events, trip_id) %>%
+  group_by(day, week) %>%
+  subset(usertype == "Subscriber") %>%
+  count(usertype = "Subsciber") %>%
+  na.omit()
+
+# heatmap of trips taken
+ggplot(divy_count_trips_taken, aes(week, day, fill = n)) + geom_tile() +
+  guides(fill = guide_colourbar(barwidth = 1, barheight = 7)) + 
+  coord_fixed() + labs(x = "Week", y = "Day", fill = "Trips Taken") + 
+  ggtitle("Figure 1.3C - Divvy Trips Taken Throughot the Year") 
+
+```
+
+Discussion of Visualization 1.3 - Trip Duration Throughout Week
+
+
+    
+
+### Analyses: Sub-title about the analyses/models you are using 
+
+
+
+<!--  
+
+Build linear models, run hypothesis tests, create confidence intervals and/or
+run simulations to answer questions that are of interest.
+
+--> 
+
+Analyses 1.3 - Anova for gender differences in ridership 
+
+First need to check conditions for Anova 
+
+1. We can check the first condition, as to whether the variances within each group
+are approximately the same, by comparing the standard deviations of ride durations
+within each group (gender). As long as the largest standard deviation is
+not twice as big as the smallest standard deviation this condition is roughly
+met.
+
+
+```{r message=FALSE, warning=FALSE, tidy=TRUE}
+
+library(dplyr)
+
+# first subset for Subscribers then visualize to see if there might be any obvious 
+# differences 
+
+divy_subscribers <- divy_2017 %>%
+  select(usertype, month, week, day, hour, gender, tripduration, trip_id) %>%
+  group_by(gender) %>%
+  subset(usertype == "Subscriber") %>%
+  na.omit()
+
+divy_subscribers %>%
+  ggplot(aes(tripduration, gender, fill = gender)) +
+  geom_boxplot() + coord_flip() + ggtitle("Trip Duration vs Gender") + 
+  labs(x = "Gender", y = "Trip Duration (min)", fill = "Gender")
+
+# CONDITION 1
+
+# first subset for Subscribers 
+
+divy_subscribers <- divy_2017 %>%
+  select(usertype, month, week, day, hour, gender, tripduration, trip_id) %>%
+  group_by(gender) %>%
+  subset(usertype == "Subscriber") %>%
+  na.omit()
+
+(obs_stat <- anova(lm(tripduration ~ gender, data = divy_subscribers))$F[1])
+
+# checking this condition with dplyr
+gender_stats <- divy_subscribers |>
+  group_by(gender) |>
+  summarize(mean_tripduration = mean(tripduration),
+            sd_reaction = sd(tripduration))
+
+
+# print table 
+gender_stats
+
+# check ratio between largest and smallest sd (CONDITION 1 MET)
+# ensure that the ratio is not twice as big between the smallest and largest deviation 
+gender_stats$sd_reaction
+max(gender_stats$sd_reaction)/min(gender_stats$sd_reaction)
+
+# CONDITION 2 
+
+# create residual plot 
+
+gender_residuals <- divy_subscribers %>%
+  group_by(gender) %>%
+  mutate(mean_rt = mean(tripduration), 
+            rt_residuals = tripduration - mean_rt)
+
+
+qqnorm(gender_residuals$rt_residuals)
+
+# normalize 
+
+gender_residuals_log <- divy_subscribers %>%
+  group_by(gender) %>%
+  mutate(log_tripduration = (log(tripduration)))
+
+
+gender_residuals <- gender_residuals_log %>%
+  group_by(gender) %>%
+  mutate(mean_log_rt = mean(log_tripduration), 
+            rt_residuals = log_tripduration - mean_log_rt)
+
+
+qqnorm(gender_residuals$rt_residuals)
+
+# let's now create our anova table 
+
+(fit_tripduration <- lm(tripduration ~ gender, data = divy_subscribers))
+
+(anova_table <- anova(fit_tripduration))
+
+# plot null distribution
+
+(obs_stat <- anova(lm(log_tripduration ~ gender, data = gender_residuals_log))$F[1])
+
+# this is as far as i got here
+# define df1, df2, df3
+
+(N <- nrow(gender_residuals))
+(K <- 2)
+
+(df1 <- K - 1)
+(df2 <- N - K)
+(df3 <- N -1)
+
+
+# visualize the null distribution 
+x <- seq(-.5, 5, by = 0.01)
+y <- df(x, df1, df2)
+
+plot(x, y, type = "l", xlim = c(0,10))
+abline(v = obs_stat, col = "red")
+
+```
+
+Condition 1
+The variances (or standard deviations) in each group must be approximately the same 
+
+-the ratio between the smallest and largest sd is not twice as big, so this
+condition seems to be met. 
+
+
+
+
+
+
+$\\$
+
+
+    
+    
+    
+    
+    
+    
+
+
+## Conclusion 
+
+
+
+<!--  
+
+
+~1-2 paragraphs summarizing what you found, how the findings address your
+question of interest, and possible future directions. Please make sure describe
+your conclusions in an intuitive way, and make sure that your argument is strong
+and backed by solid evidence from your data.
+
+
+
+-->
+
+
+
+
+
+
+
+
+
+
+$\\$
+
+
+
+
+
+
+## Reflection
+
+
+<!--  
+
+
+Reflection  
+
+Write one paragraph describing what went well with this project and what was
+more difficult. Also describe any additional things you tried that you did not
+end up including in this write-up, and approximately how much time you spend
+working the project.
+
+Finally, please go to Canvas and answer a few questions related to how this project went: https://yale.instructure.com/courses/79947/quizzes/52421
+
+
+
+-->
+
+
+
+
+$\\$
+
+
+
+
+## Appendix
+
+
+<!--  
+
+
+You can include a complete listing of your code here if you could not fit it
+into the body of the document. Make sure your code is well commented and easy to
+read - i.e., use meaningful object names, separate your code into sections,
+describe what each section is doing, use good formatting, etc.
+
+
+-->
+
+
+
+
