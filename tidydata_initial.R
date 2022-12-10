@@ -14,6 +14,13 @@ divy_2017 <- divy_chicago |>
   filter(year == "2017") |>
   na.omit()
 
+# number of rides by usertype
+divy_2017$usertype <- as.factor(divy_2017$usertype)
+summary(divy_2017$usertype)
+
+## out of 2957690 rides, 832 were by customers, 4 were by dependents and the rest were subscribers. 
+## Therefore, we will only look at Subscribers bike rides and remove the usertype column from our cleaned dataset
+
 # modify types of variables
 
 divy_2017$month <- as.factor(divy_2017$month)
@@ -33,9 +40,7 @@ end_list <- cbind(c(divy_2017$longitude_end), c(divy_2017$latitude_end))
 
 divy_2017 <- divy_2017 |>
   mutate(tripdistance = distHaversine(end_list, start_list)) |>
-  select(-year, -week, -usertype, -from_station_id, -to_station_id -starttime, -stoptime)
-
-divy_2017 <- select(divy_2017, -year)
-divy_2017 <- select(divy_2017, -starttime, -stoptime)
+  filter(usertype == "Subscriber") |>
+  select(-year, -usertype, -from_station_id, -to_station_id -starttime, -stoptime)
   
 write.csv(divy_2017, "divvy_main_2017.csv")
