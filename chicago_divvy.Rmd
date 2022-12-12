@@ -229,9 +229,9 @@ include some code here, although extensive data cleaning code should be put on
 GitHub and/or in an appendix at the end of the document.
 
 --> 
-The original dataset from !Kaggle[https://www.kaggle.com/datasets/yingwurenjian/chicago-divvy-bicycle-sharing-data] contained information on over 9.5 million Divvy 
-bike rides from 2014 to 2017 as well as weather data in Chicago taken from the website 
-wunderground.com. 
+The original dataset from Kaggle contained information on over 9.5 million Divvy 
+bike rides from 2014 to 2017 as well as weather data in Chicago taken from the 
+website wunderground.com. 
 
 Given the large size of the dataset, we have chosen 
 to focus on Divvy bike rides in 2017, which itself consists of 2.96 million rides. We 
@@ -250,7 +250,8 @@ to our knowledge there has not been any hypothesis testing or model-fitting
 with respect to trip durations.
 
 
-All files for this project can be found at ![this Github repository](https://github.com/fgonzalez3/stats_final_project), including the ![R script](https://github.com/fgonzalez3/stats_final_project/blob/main/tidydata_initial.R) 
+All files for this project can be found at this Github repository: 
+https://github.com/fgonzalez3/stats_final_project, including the R script (https://github.com/fgonzalez3/stats_final_project/blob/main/tidydata_initial.R) 
 used to tidy the raw data into the dataset we used for this project.
 
 ```{r message=FALSE, warning=FALSE, tidy=TRUE, echo=FALSE}
@@ -272,7 +273,8 @@ $\\$
     
 ## Analyses    
 
-Before starting on our analyses, we have decided to plot a  histogram showing the distribution of `tripduration` values in the dataset. 
+Before starting on our analyses, we have decided to plot a histogram showing the distribution 
+of `tripduration` values in the dataset. 
 
 ```{r}
 library(cowplot)
@@ -291,7 +293,10 @@ log_hist <- ggplot(divy_2017, aes(log(tripduration))) +
 plot_grid(init_hist, log_hist, labels = "AUTO")
 
 ```
-Given the right-skewed nature of our data (as seen in A) and the underlying assumption of normality for several of the analyses we will be performing, we have decided to log-transform our response variable, `tripduration` (B) and will be carrying out all analyses with the log-transformed response variable, log(trip duration) here on out.
+Given the right-skewed nature of our data (as seen in A) and the underlying assumption of 
+normality for several of the analyses we will be performing, we have decided to log-transform 
+our response variable, `tripduration` (B) and will be carrying out all analyses with the 
+log-transformed response variable, log(trip duration) here on out.
 
 ```{r}
 #response variable distribution more closely resembles normal distribution
@@ -344,7 +349,10 @@ plot_grid(hour_plot, day_plot, month_plot, labels = "AUTO")
 
 ```
 
-From the boxplots, it can be seen that there is variability in average log(trip duration) with respect to the different factor levels in all three temporal variables (hour of the day, day of the week, month of the year), thus, it seems likely that these three temporal variables would be significant predictors of Divvy bike trip duration.
+From the boxplots, it can be seen that there is variability in average log(trip duration) 
+with respect to the different factor levels in all three temporal variables (hour of the day, 
+day of the week, month of the year), thus, it seems likely that these three temporal variables 
+would be significant predictors of Divvy bike trip duration.
 
 
 
@@ -352,7 +360,8 @@ From the boxplots, it can be seen that there is variability in average log(trip 
 
 **Null hypothesis:** There is no significant difference in mean bike trip durations 
 between all hours of the day.
-**Alternative hypothesis:** The mean bike trip durations differed for at least one hour of the day.
+**Alternative hypothesis:** The mean bike trip durations differed for at least one 
+hour of the day.
 
 $H_0: \mu_0 = \mu_1 = ... =  \mu_{23}$
 $H_A: \mu_i \ne \mu_j \text{ for any i, j in {0, 1, ... , 23}}$
@@ -364,34 +373,27 @@ $H_A: \mu_i \ne \mu_j \text{ for any i, j in {0, 1, ... , 23}}$
 anova_fit <- lm(log_tripduration ~ hour, data = divy_2017)
 anova(anova_fit)
 
-### summary stats & residuals for anova_fit
-
-summary_stats <- divy_2017 |>
-  group_by(hour) |>
-  summarise(sd = sd(tripduration))
-max(summary_stats$sd)/min(summary_stats$sd)
-
-summary_residuals <- divy_2017 |>
-  group_by(hour) |>
-  mutate(mean_duration = mean(log(tripduration)),
-         residual = log(tripduration) - mean_duration)
-qqnorm(summary_residuals$residual)
-
 ```
 
-The p-value for the ANOVA was almost equal to 0, therefore, we can conclude that there is statistically significant evidence to reject the null hypothesis and that the mean bike trip durations differ for at least one hour of the day. A post-hoc Tukey's HSD test (see Appendix for results) showed that mean trip duration significantly differed between at least 70% of all possible pairs of hours (p < 0.05).
+The p-value for the ANOVA was almost equal to 0, therefore, we can conclude that there is 
+statistically significant evidence to reject the null hypothesis and that the mean bike 
+trip durations differ for at least one hour of the day. A post-hoc Tukey's HSD test (see 
+Appendix for results) showed that mean trip duration significantly differed between at 
+least 70% of all possible pairs of hours (p < 0.05).
 
 
 #### b: Trip duration vs. day of the week
 
 **Null hypothesis:** There is no significant difference in mean bike trip duration 
 between all days of the week.
-**Alternative hypothesis:** The mean bike trip duration differed for at least one day of the week.
+**Alternative hypothesis:** The mean bike trip duration differed for at least one 
+day of the week.
 
 $H_0: \mu_0 = \mu_1 = ... =  \mu_6$
 $H_A: \mu_i \ne \mu_j \text{ for any i, j in {0, 1, ... , 6}}$
 
-Note that 0, 1, 2, 3, 4, 5, 6 corresponds to Monday, Tuesday, Wednesday, Thursday, Friday, Saturday and Sunday respectively.
+Note that 0, 1, 2, 3, 4, 5, 6 corresponds to Monday, Tuesday, Wednesday, Thursday, 
+Friday, Saturday and Sunday respectively.
 
 ```{r}
 
@@ -401,14 +403,20 @@ anova(anova_fit)
 
 ```
 
-The p-value for the ANOVA was almost equal to 0, therefore, we can conclude that there is statistically significant evidence to reject the null hypothesis and that the mean bike trip durations differ for at least one day of the week. A post-hoc Tukey's HSD test (see Appendix for results) showed that mean trip duration significantly differed between all pairs of days (p < 0.05) except for Monday-Tuesday (adjusted p-value = 0.902) and Wednesday-Thursday (adjusted p-value = 0.288).
+The p-value for the ANOVA was almost equal to 0, therefore, we can conclude that there is 
+statistically significant evidence to reject the null hypothesis and that the mean bike 
+trip durations differ for at least one day of the week. A post-hoc Tukey's HSD test (see 
+Appendix for results) showed that mean trip duration significantly differed between all 
+pairs of days (p < 0.05) except for Monday-Tuesday (adjusted p-value = 0.902) and 
+Wednesday-Thursday (adjusted p-value = 0.288).
 
 
 #### c: Trip duration vs. month of the year
 
 **Null hypothesis:** There is no significant difference in mean bike trip duration 
 between all months of the year.
-**Alternative hypothesis:** The mean bike trip duration differed for at least one month of the year.
+**Alternative hypothesis:** The mean bike trip duration differed for at least one month 
+of the year.
 
 $H_0: \mu_1 = \mu_2 = ... =  \mu_{12}$
 $H_A: \mu_i \ne \mu_j \text{ for any i, j in {1, 2, ... , 12}}$
@@ -422,15 +430,25 @@ anova(anova_fit)
 
 ```
 
-The p-value for the ANOVA was almost equal to 0, therefore, we can conclude that there is statistically significant evidence to reject the null hypothesis and that the mean bike trip durations differ for at least one month of the year. A post-hoc Tukey's HSD test (see Appendix for results) showed that mean trip duration significantly differed between all pairs of months (p < 0.05) except for March-November (adjusted p-value = 0.386) and May-September (adjusted p-value = 0.931).
+The p-value for the ANOVA was almost equal to 0, therefore, we can conclude that there 
+is statistically significant evidence to reject the null hypothesis and that the mean bike 
+trip durations differ for at least one month of the year. A post-hoc Tukey's HSD test (see 
+Appendix for results) showed that mean trip duration significantly differed between all pairs 
+of months (p < 0.05) except for March-November (adjusted p-value = 0.386) and May-September 
+(adjusted p-value = 0.931).
 
 
 #### d. Additional analysis
 
-From the one-way ANOVAs, having seen that Divvy bike trip duration differed significantly with respect to hour of the day, day of the week and month of the year, we also wanted to conduct two-way ANOVAs to determine if there were any additional interactions between the three temporal variables that could have an effect on bike trip duration.  
+From the one-way ANOVAs, having seen that Divvy bike trip duration differed significantly with 
+respect to hour of the day, day of the week and month of the year, we also wanted to conduct 
+two-way ANOVAs to determine if there were any additional interactions between the three temporal 
+variables that could have an effect on bike trip duration.  
 
-**Null hypotheses:** Divvy bike trip duration is not affected by any of the three temporal variables and/or their interactions.
-**Alternative hypotheses:** Divvy bike trip duration is affected by at least one of the temporal variables and/or their interactions.
+**Null hypotheses:** Divvy bike trip duration is not affected by any of the three temporal variables 
+and/or their interactions.
+**Alternative hypotheses:** Divvy bike trip duration is affected by at least one of the temporal 
+variables and/or their interactions.
 
 *Main effect: month*
 $H_0: \alpha_1 = \alpha_2 = ... =  \alpha_{12}$
@@ -472,7 +490,11 @@ summary(multi_int_fit3)
 
 ```
 
-For all three two-way ANOVAs (hour and day, day and month, month and hour), the p-values for the main effects and interaction effects were 0, which suggests that there is sufficient evidence to conclude that the main effects (hour, day, month) and their one-on-one interactions with each other (hour:day, day:month, month:hour) are significant predictors of Divvy bike trip duration.
+For all three two-way ANOVAs (hour and day, day and month, month and hour), the p-values for 
+the main effects and interaction effects were 0, which suggests that there is sufficient evidence 
+to conclude that the main effects (hour, day, month) and their one-on-one interactions with 
+each other (hour:day, day:month, month:hour) are statistically significant predictors of Divvy 
+bike trip duration.
 
 
 ### Part 2: Do weather conditions affect Divvy bike trip duration?
@@ -482,9 +504,11 @@ varied with respect to
   a. temperature (ºF) and
   b. weather events
   
-For (a), a linear regression was fitted and for (b), a one-way ANOVA was carried out for the weather events.
+For (a), a linear regression was fitted and for (b), a one-way ANOVA was carried out 
+for the weather events.
 
-To visualise the data, a scatter plot was plotted for trip duration vs. temperature, and a boxplot for trip duration vs. weather event are plotted:
+To visualise the data, a scatter plot was plotted for trip duration vs. temperature, and a 
+boxplot for trip duration vs. weather event are plotted:
 
 
 ```{r}
@@ -505,7 +529,12 @@ plot_grid(temp_plot, weather_plot, labels = "AUTO")
 
 
 ```  
-Based on the visualizations, for trip durations vs temperature, while there is huge variance in log(trip duration) across all temperatures, the regression line fitted seems to have a slight positive slope, which suggests that there might be an association between trip duration and temperature. As for trip duration vs. weather events, the boxplot depicts variation in average log(trip duration) between the different events, which suggests that the mean trip duration might have varied for at least one of the weather events. 
+Based on the visualizations, for trip durations vs temperature, while there is huge variance in 
+log(trip duration) across all temperatures, the regression line fitted seems to have a slight 
+positive slope, which suggests that there might be an association between trip duration and 
+temperature. As for trip duration vs. weather events, the boxplot depicts variation in average 
+log(trip duration) between the different events, which suggests that the mean trip duration might 
+have varied for at least one of the weather events. 
 
 
 #### a: Trip duration vs. temperature (ºF)
@@ -527,17 +556,20 @@ summary(lm_fit)
 
 #### b: Trip duration vs. weather events
 
-Besides temperature, there is another weather variable in the dataset, `events`, which has 5 factor levels:
+Besides temperature, there is another weather variable in the dataset, `events`, which has 5 
+factor levels:
 - clear
 - not clear (fog, haze, etc)
 - cloudy
 - rain or snow
 - tstorms (thunderstorms)
 
-Here, we carried out a one-way ANOVA to test whether bike trip durations varied with respect to weather events.
+Here, we carried out a one-way ANOVA to test whether bike trip durations varied with respect 
+to weather events.
 
-**Null hypothesis:** There is no difference in mean trip duration across the 5 different precipitation events.
-**Alternative hypothesis:** The mean trip duration differed for at least one of the precipitation events.
+**Null hypothesis:** There is no difference in mean trip duration across the 5 different 
+weather events.
+**Alternative hypothesis:** The mean trip duration differed for at least one of the weather events.
 
 
 $H_0: \mu_{clear} = \mu_{not clear} = \mu_{rain or snow} = \mu_{cloudy} =  \mu_{tstorms}$
@@ -555,11 +587,17 @@ TukeyHSD(pairwise_fit)
 
 ```
 
-The p-value for the ANOVA was almost equal to 0, therefore, we can conclude that there is statistically significant evidence to reject the null hypothesis and that the mean bike trip durations differ for at least one weather event. A post-hoc Tukey's HSD test showed that mean trip duration significantly differed between all pairs of events.
+The p-value for the ANOVA was almost equal to 0, therefore, we can conclude that there is statistically
+significant evidence to reject the null hypothesis and that the mean bike trip durations differ for at 
+least one weather event. A post-hoc Tukey's HSD test showed that mean trip duration significantly 
+differed between all pairs of events.
 
 #### c: Additional analysis
 
-Based on the results from part a and b, we also wanted to know if trip durations could be explained by both temperature and weather events, as well as any interaction between temperature and weather events. To test this, we fitted a multiple regression model of trip duration with respect to temperature and weather events:
+Based on the results from part a and b, we also wanted to know if trip durations could be explained 
+by both temperature and weather events, as well as any interaction between temperature and weather 
+events. To test this, we fitted a multiple regression model of trip duration with respect to temperature 
+and weather events:
 
 ```{r}
 
@@ -582,18 +620,35 @@ ggplot(divy_2017, aes(temperature, log_tripduration, shape = events)) +
   geom_smooth(method = "lm", aes(color = events))
 ```  
 
-For the additive model (i.e. main effects only), it can be seen that the p-values for temperature and all factor levels of weather events are less than 0.05 and hence significant, which suggests that there is statistically sufficient evidence that trip duration can be explained by temperature and weather events.
+For the additive model (i.e. main effects only), it can be seen that the p-values for temperature 
+and all factor levels of weather events are less than 0.05 and hence significant, which suggests 
+that there is statistically sufficient evidence that trip duration can be explained by temperature 
+and weather events.
 
-For the model that considers the interaction between temperature and weather events, it can be seen that while temperature remains a significant predictor (p-value = 0), three levels under weather events (`cloudy`,`not clear`, `rain or snow`) have been "dropped" as significant predictors (p-values = 0.192, 0.387, 0.264 respectively), whereas with the exception of temperature:not clear (p = 0.0774), almost all temperature:weather events seem to be significant predictors of trip duration (p-values < 0.05). Comparing the additive and interaction model using an ANOVA, a p-value of 0 was reported, which suggests that there is sufficient evidence that the interaction between temperature and weather event is a significant predictor of trip duration.
+For the model that also considers the interaction between temperature and weather events, it can be 
+seen that while temperature remains a significant predictor (p-value = 0), three levels under 
+weather events (`cloudy`,`not clear`, `rain or snow`) have been "dropped" as statistically 
+significant predictors (p-values = 0.192, 0.387, 0.264 respectively), whereas with the exception of 
+temperature:not clear (p = 0.0774), almost all temperature:weather events seem to be significant 
+predictors of trip duration (p-values < 0.05). Comparing the additive and interaction model using 
+an ANOVA, a p-valueof 0 was reported, which suggests that there is sufficient evidence that the 
+interaction between temperature and weather event is a statistically significant predictor of trip 
+duration.
 
-Therefore, for any subsequent model considering more than one predictor with respect to trip duration, it seems likely that temperature and temperature:weather events might be significant predictors, but not weather events alone.
+Therefore, for any subsequent model considering more than one predictor with respect to trip 
+duration, it seems likely that temperature and temperature:weather events might be significant 
+predictors, but not weather events alone.
 
 
 ### Part 3: Do Divvy bike trip durations vary between gender?
 
-Here, we were interested in understanding whether Divvy bike trip durations were different for male and female subscribers, and carried out a one-way ANOVA to determine if there was a significant difference between mean male and female trip durations.
+Here, we were interested in understanding whether Divvy bike trip durations were different for 
+male and female subscribers, and carried out a one-way ANOVA to determine if there was a 
+significant difference between mean male and female trip durations.
 
-Below is a boxplot visualisation of bike trip durations vs gender, which seems to suggest that there is a difference in trip duration between females and males, with females having a higher trip duration than males on average.
+Below is a boxplot visualisation of bike trip durations vs gender, which seems to suggest that 
+there is a difference in trip duration between females and males, with females having a higher 
+trip duration than males on average.
 
 ```{r}
 ggplot(divy_2017, aes(gender, log_tripduration, fill = gender)) +
@@ -617,7 +672,9 @@ anova(anova_fit)
 
 ```
 
-The p-value for the ANOVA was almost equal to 0, therefore, we can conclude that there is statistically significant evidence to reject the null hypothesis and that the mean bike trip durations differ between males and females. 
+The p-value for the ANOVA was almost equal to 0, therefore, we can conclude that there is 
+statistically significant evidence to reject the null hypothesis and that the mean bike 
+trip durations differ between males and females. 
 
 
 
@@ -655,9 +712,6 @@ testing whether multi-factor models (beyond just 2 factors at a time) could expl
 trip durations significantly and substantially. Furthermore, other characteristics of bike 
 trips, such as distances or frequencies, could be analysed as well. And as mentioned above, 
 these analyses could extend to other bike sharing systems too.
-
-
-
 
 
 
@@ -703,6 +757,24 @@ $\\$
 
 
 ## Appendix
+
+### A: ANOVA - test for normality and equal variance
+
+```{r}
+### summary stats & residuals for anova_fit
+
+summary_stats <- divy_2017 |>
+  group_by(hour) |>
+  summarise(sd = sd(tripduration))
+max(summary_stats$sd)/min(summary_stats$sd)
+
+summary_residuals <- divy_2017 |>
+  group_by(hour) |>
+  mutate(mean_duration = mean(log(tripduration)),
+         residual = log(tripduration) - mean_duration)
+qqnorm(summary_residuals$residual)
+
+```
 
 
 ### A: Pairwise comparisons for ANOVAs
