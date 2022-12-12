@@ -505,10 +505,10 @@ plot_grid(temp_plot, weather_plot, labels = "AUTO")
 
 
 ```  
-Based on the visualizations, for
+Based on the visualizations, for trip durations vs temperature, while there is huge variance in log(trip duration) across all temperatures, the regression line fitted seems to have a slight positive slope, which suggests that there might be an association between trip duration and temperature. As for trip duration vs. weather events, the boxplot depicts variation in average log(trip duration) between the different events, which suggests that the mean trip duration might have varied for at least one of the weather events. 
 
 
-#### a: Trip distances vs. temperature (ºF)
+#### a: Trip duration vs. temperature (ºF)
 
 **Null hypothesis:** There is no association between trip duration and temperature.
 **Alternative hypothesis:** There is an association between trip duration and temperature.
@@ -593,7 +593,7 @@ Therefore, for any subsequent model considering more than one predictor with res
 
 Here, we were interested in understanding whether Divvy bike trip durations were different for male and female subscribers, and carried out a one-way ANOVA to determine if there was a significant difference between mean male and female trip durations.
 
-Below is a boxplot visualisation of bike trip durations vs gender:
+Below is a boxplot visualisation of bike trip durations vs gender, which seems to suggest that there is a difference in trip duration between females and males, with females having a higher trip duration than males on average.
 
 ```{r}
 ggplot(divy_2017, aes(gender, log_tripduration, fill = gender)) +
