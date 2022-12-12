@@ -650,8 +650,11 @@ such as weather events, ended up being dropped off as a significant predictor.
 
 While this dataset focuses on one bike sharing system in a particular city for a 
 given year, these analyses could be equally useful and relevant to characterising 
-bike rides in other bike sharing systems across the world. 
-
+bike rides in other bike sharing systems across the world. Future analyses could include 
+testing whether multi-factor models (beyond just 2 factors at a time) could explain bike
+trip durations significantly and substantially. Furthermore, other characteristics of bike 
+trips, such as distances or frequencies, could be analysed as well. And as mentioned above, 
+these analyses could extend to other bike sharing systems too.
 
 
 
