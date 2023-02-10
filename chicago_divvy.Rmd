@@ -161,7 +161,6 @@ library(ggmap)
 
 # register Google API key
 
-register_google(key = "AIzaSyC5NF4xccTOw2UvjV4PRIElzrX8vr5Yv6U")
 
 # load Chicago map and make sure it plots properly
 # also adjust zoom scale to only visualize loop and surrounding areas 
